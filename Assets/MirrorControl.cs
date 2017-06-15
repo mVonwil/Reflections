@@ -19,7 +19,7 @@ public class MirrorControl : MonoBehaviour {
 		Debug.DrawRay (pointOfImpact, outgoing,Color.magenta);
 		RaycastHit hit;
 		//Debug.Log ("In mirror");
-			if (Physics.Raycast (pointOfImpact/*+outgoing*0.1f*/, incoming, out hit) {
+			if (Physics.Raycast (pointOfImpact+outgoing*0.1f, incoming, out hit)) {
 				if (hit.collider.tag == "Mirror") {
 					Vector3 impactPoint = hit.point;
 					hit.collider.gameObject.GetComponent<MirrorControl> ().Reflect (outgoing, impactPoint,hit.normal,depth+1);
@@ -27,6 +27,30 @@ public class MirrorControl : MonoBehaviour {
 					Debug.DrawRay(hit.point,hit.normal,Color.red);
 				}
 			}
+		}
+	}
+
+	static public void BounceRays(Vector3 startRayAt, Vector3 rayDir, ref RaycastHit[] hits)
+	{
+		Ray curRay = new Ray (startRayAt, rayDir);
+
+		for (int i = 0; i < hits.Length; i++) {
+			
+			RaycastHit rayHit = new RaycastHit ();
+
+			if (Physics.Raycast (curRay, out rayHit)) {
+
+				hits [i] = rayHit;
+				
+				var hitPoint = curRay.GetPoint (rayHit.distance - 0.005f);
+				Debug.DrawLine (curRay.origin, hitPoint, Color.red);
+
+
+				curRay = new Ray (hitPoint, Vector3.Reflect (curRay.direction, rayHit.normal));
+			} else {
+				break;
+			}
+
 		}
 	}
 }

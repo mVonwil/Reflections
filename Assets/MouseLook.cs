@@ -34,20 +34,28 @@ public class MouseLook : MonoBehaviour {
 	}
 
 	void ShootLine(){
-		Vector3 forward = transform.TransformDirection (Vector3.forward) * 10;
-		Debug.DrawRay (transform.position, forward, Color.green);
-		RaycastHit hit;
 
-		if(Physics.Raycast(transform.position/*+forward*0.01f*/, forward, out hit)){
-			if (hit.collider.tag == "Mirror") {
-				Debug.Log ("In mouse");
-				string mirrorName = hit.collider.gameObject.name;
-				print (mirrorName);
-				Vector3 impactPoint = hit.point;
-				hit.collider.gameObject.GetComponent<MirrorControl> ().Reflect (forward, impactPoint, hit.normal, 0);
-				//Debug.Log ("Hit Mirror");
-				Debug.DrawRay(hit.point,hit.normal*1.0f,Color.cyan);
-			}
-		}
+		RaycastHit[] myHits = new RaycastHit[15];
+
+		MirrorControl.BounceRays (transform.position, transform.forward, ref myHits);
+
+		myHits = myHits;
+//
+//
+//		Vector3 forward = transform.TransformDirection (Vector3.forward) * 10;
+//		Debug.DrawRay (transform.position, forward, Color.green);
+//		RaycastHit hit;
+//
+//		if(Physics.Raycast(transform.position+forward*0.01f, forward, out hit)){
+//			if (hit.collider.tag == "Mirror") {
+//				Debug.Log ("In mouse");
+//				string mirrorName = hit.collider.gameObject.name;
+//				print (mirrorName);
+//				Vector3 impactPoint = hit.point;
+//				hit.collider.gameObject.GetComponent<MirrorControl> ().Reflect (forward, impactPoint, hit.normal, 0);
+//				//Debug.Log ("Hit Mirror");
+//				Debug.DrawRay(hit.point,hit.normal*1.0f,Color.cyan);
+//			}
+//		}
 	}
 }
