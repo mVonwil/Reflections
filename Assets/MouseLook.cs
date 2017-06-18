@@ -5,6 +5,8 @@ using UnityEngine;
 public class MouseLook : MonoBehaviour {
 
 	public GameObject playerBody;
+	static public Vector3[] lineVectors;
+	static public int bounceMax = 2;
 
 	public float horizontalSpeed = 2.0f;
 	public float verticalSpeed = 2.0f;
@@ -21,7 +23,7 @@ public class MouseLook : MonoBehaviour {
 
 		LookLimits ();
 
-		transform.position = new Vector3(playerBody.transform.position.x, playerBody.transform.position.y + 1, playerBody.transform.position.z);
+		transform.position = new Vector3(playerBody.transform.position.x, playerBody.transform.position.y + 0.25f, playerBody.transform.position.z);
 
 		ShootLine ();
 	}
@@ -37,25 +39,13 @@ public class MouseLook : MonoBehaviour {
 
 		RaycastHit[] myHits = new RaycastHit[15];
 
-		MirrorControl.BounceRays (transform.position, transform.forward, ref myHits);
+		lineVectors = new Vector3[16];
+		lineVectors [0] = transform.position;
+
+		MirrorControl.BounceRays (transform.position, transform.forward, ref myHits, ref lineVectors);
 
 		myHits = myHits;
-//
-//
-//		Vector3 forward = transform.TransformDirection (Vector3.forward) * 10;
-//		Debug.DrawRay (transform.position, forward, Color.green);
-//		RaycastHit hit;
-//
-//		if(Physics.Raycast(transform.position+forward*0.01f, forward, out hit)){
-//			if (hit.collider.tag == "Mirror") {
-//				Debug.Log ("In mouse");
-//				string mirrorName = hit.collider.gameObject.name;
-//				print (mirrorName);
-//				Vector3 impactPoint = hit.point;
-//				hit.collider.gameObject.GetComponent<MirrorControl> ().Reflect (forward, impactPoint, hit.normal, 0);
-//				//Debug.Log ("Hit Mirror");
-//				Debug.DrawRay(hit.point,hit.normal*1.0f,Color.cyan);
-//			}
-//		}
 	}
+
+
 }
