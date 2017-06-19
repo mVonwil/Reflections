@@ -5,7 +5,7 @@ using UnityEngine;
 public class MouseLook : MonoBehaviour {
 
 	public GameObject playerBody;
-	static public Vector3[] lineVectors;
+	public Vector3[] lineVectors;
 
 	public float horizontalSpeed = 2.0f;
 	public float verticalSpeed = 2.0f;

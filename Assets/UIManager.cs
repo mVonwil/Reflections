@@ -14,6 +14,6 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		chargeTimer.value = PlayerMovement.buttonHeld / PlayerMovement.rayBounceTimeToMax;
+		chargeTimer.value = PlayerMovement.reflectNum;
 	}
 }
