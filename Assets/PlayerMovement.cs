@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour {
 	public List<LineRenderer> lineList;
 	static public float buttonHeld;
 	public List<Color> lineColors;
+	public Vector3[] linePos;
 
 	void Start(){
 		lineColors.Add(Color.blue);
@@ -23,6 +24,8 @@ public class PlayerMovement : MonoBehaviour {
 		lineColors.Add(Color.red);
 		lineColors.Add(Color.yellow);
 		lineColors.Add(Color.black);
+
+		Cursor.visible = false;
 	}
 	
 	// Update is called once per frame
@@ -72,13 +75,20 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void LeftMouseClick(){
 		if (runOnce == false) {
-			MirrorControl.MaxRays (MouseLook.bounceMax);
+			MaxRays (buttonHeld);
 			lineRend = Instantiate (lineShot);
-			lineRend.SetPositions (MirrorControl.linePos);
+//			lineRend.SetPositions (MouseLook.lineVectors);
+			lineRend.SetPositions (linePos);
 			lineRend.material.color = lineColors[Random.Range(0,lineColors.Count)];
 			lineList.Add (lineRend);
 			buttonHeld = 0;
 			runOnce = true;
+		}
+	}
+
+	public void MaxRays(float bounceMax){
+		for (int e = 1; e < bounceMax; e++){
+			linePos[e] = MouseLook.lineVectors[e];
 		}
 	}
 }

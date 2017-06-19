@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class MirrorControl : MonoBehaviour {
 
-	static public Vector3[] linePos;
-
 	static public void BounceRays(Vector3 startRayAt, Vector3 rayDir, ref RaycastHit[] hits, ref Vector3[] lineVectors)
 	{
 		Ray curRay = new Ray (startRayAt, rayDir);
@@ -30,11 +28,5 @@ public class MirrorControl : MonoBehaviour {
 				break;
 			}
 		} 
-	}
-
-	static public void MaxRays(int bounceMax){
-		for (int e = 1; e < bounceMax; e++){
-			linePos[e] = MouseLook.lineVectors[e];
-		}
 	}
 }
