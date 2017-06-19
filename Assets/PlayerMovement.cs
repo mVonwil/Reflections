@@ -12,12 +12,13 @@ public class PlayerMovement : MonoBehaviour {
 	public LineRenderer lineShot;
 	public bool runOnce = false;
 	public List<LineRenderer> lineList;
-	public float rayBounceTimeToMax = 1;
+	static public float rayBounceTimeToMax = 1;
 	public int minRays = 2, maxRays = 15;
 	static public float buttonHeld;
 	public List<Color> lineColors;
 	public Vector3[] linePos;
 	public MouseLook ml;
+	public UIManager ui;
 
 	void Start(){
 		lineColors.Add(Color.blue);
@@ -55,16 +56,19 @@ public class PlayerMovement : MonoBehaviour {
 
 		if (Input.GetMouseButtonUp (0)) {
 			LeftMouseClick ();
+			ui.charger.SetActive(false);
 		}
 
 		if (Input.GetMouseButton (0)) {
 			buttonHeld += (Time.deltaTime);
+			ui.charger.SetActive(true);
 			runOnce = false;
 		} else {
 			buttonHeld = 0;
 		}
 
 		if (Input.GetMouseButton (1)) {
+			
 			if (lineList.Count > 0) {
 				LineRenderer lineObj = lineList.FindLast ((LineRenderer obj) => lineRend);
 				Destroy (lineObj);
@@ -83,11 +87,8 @@ public class PlayerMovement : MonoBehaviour {
 		if (runOnce == false) {
 			//shoot line NOW
 			ml.ShootLine(Mathf.RoundToInt (Mathf.Lerp(minRays, maxRays, buttonHeld / rayBounceTimeToMax)));
-
-			//MaxRays (buttonHeld);
 			lineRend = Instantiate (lineShot);
 			lineRend.SetPositions (MouseLook.lineVectors);
-//			lineRend.SetPositions (linePos);
 			lineRend.material.color = lineColors[Random.Range(0,lineColors.Count)];
 			lineList.Add (lineRend);
 			buttonHeld = 0;

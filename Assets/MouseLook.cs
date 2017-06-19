@@ -6,7 +6,6 @@ public class MouseLook : MonoBehaviour {
 
 	public GameObject playerBody;
 	static public Vector3[] lineVectors;
-	//static public int bounceMax = 2;
 
 	public float horizontalSpeed = 2.0f;
 	public float verticalSpeed = 2.0f;
@@ -24,8 +23,6 @@ public class MouseLook : MonoBehaviour {
 		LookLimits ();
 
 		transform.position = new Vector3(playerBody.transform.position.x, playerBody.transform.position.y + 0.25f, playerBody.transform.position.z);
-
-		//ShootLine ();
 	}
 
 	void LookLimits(){
