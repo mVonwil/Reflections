@@ -6,7 +6,7 @@ public class MouseLook : MonoBehaviour {
 
 	public GameObject playerBody;
 	static public Vector3[] lineVectors;
-	static public float bounceMax = 2;
+	//static public int bounceMax = 2;
 
 	public float horizontalSpeed = 2.0f;
 	public float verticalSpeed = 2.0f;
@@ -25,7 +25,7 @@ public class MouseLook : MonoBehaviour {
 
 		transform.position = new Vector3(playerBody.transform.position.x, playerBody.transform.position.y + 0.25f, playerBody.transform.position.z);
 
-		ShootLine ();
+		//ShootLine ();
 	}
 
 	void LookLimits(){
@@ -35,11 +35,13 @@ public class MouseLook : MonoBehaviour {
 			pitch = 60;
 	}
 
-	void ShootLine(){
+	public void ShootLine(int bounceMax){
 
-		RaycastHit[] myHits = new RaycastHit[15];
+		Debug.Log ("Boucning " + bounceMax.ToString () + " Rays");
 
-		lineVectors = new Vector3[16];
+		RaycastHit[] myHits = new RaycastHit[bounceMax];
+
+		lineVectors = new Vector3[bounceMax+1];
 		lineVectors [0] = transform.position;
 
 		MirrorControl.BounceRays (transform.position, transform.forward, ref myHits, ref lineVectors);

@@ -12,9 +12,12 @@ public class PlayerMovement : MonoBehaviour {
 	public LineRenderer lineShot;
 	public bool runOnce = false;
 	public List<LineRenderer> lineList;
+	public float rayBounceTimeToMax = 1;
+	public int minRays = 2, maxRays = 15;
 	static public float buttonHeld;
 	public List<Color> lineColors;
 	public Vector3[] linePos;
+	public MouseLook ml;
 
 	void Start(){
 		lineColors.Add(Color.blue);
@@ -48,16 +51,19 @@ public class PlayerMovement : MonoBehaviour {
 			transform.position += Vector3.up * moveSpeed * Time.deltaTime;
 		if (Input.GetKey(KeyCode.LeftControl))
 			transform.position -= Vector3.up * moveSpeed * Time.deltaTime;
-		if (Input.GetMouseButton (0)) {
-			buttonHeld += (Time.deltaTime * 2);
-			if (buttonHeld > 15)
-				buttonHeld = 15;
-			runOnce = false;
-		}
+
+
 		if (Input.GetMouseButtonUp (0)) {
-			MouseLook.bounceMax = Mathf.RoundToInt (buttonHeld);
 			LeftMouseClick ();
 		}
+
+		if (Input.GetMouseButton (0)) {
+			buttonHeld += (Time.deltaTime);
+			runOnce = false;
+		} else {
+			buttonHeld = 0;
+		}
+
 		if (Input.GetMouseButton (1)) {
 			if (lineList.Count > 0) {
 				LineRenderer lineObj = lineList.FindLast ((LineRenderer obj) => lineRend);
@@ -75,10 +81,13 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void LeftMouseClick(){
 		if (runOnce == false) {
-			MaxRays (buttonHeld);
+			//shoot line NOW
+			ml.ShootLine(Mathf.RoundToInt (Mathf.Lerp(minRays, maxRays, buttonHeld / rayBounceTimeToMax)));
+
+			//MaxRays (buttonHeld);
 			lineRend = Instantiate (lineShot);
-//			lineRend.SetPositions (MouseLook.lineVectors);
-			lineRend.SetPositions (linePos);
+			lineRend.SetPositions (MouseLook.lineVectors);
+//			lineRend.SetPositions (linePos);
 			lineRend.material.color = lineColors[Random.Range(0,lineColors.Count)];
 			lineList.Add (lineRend);
 			buttonHeld = 0;
@@ -86,7 +95,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	}
 
-	public void MaxRays(float bounceMax){
+	public void MaxRays(int bounceMax){
 		for (int e = 1; e < bounceMax; e++){
 			linePos[e] = MouseLook.lineVectors[e];
 		}
