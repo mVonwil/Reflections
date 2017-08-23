@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XboxCtrlrInput;
 
 public class MouseLook : MonoBehaviour {
 
@@ -12,11 +13,18 @@ public class MouseLook : MonoBehaviour {
 
 	public float yaw = 0.0f;
 	public float pitch = 0.0f;
+
+	public bool invertY;
 	
 	// Update is called once per frame
 	void Update () {
+		if(XCI.IsPluggedIn(XboxController.Any)){
+			yaw += horizontalSpeed * XCI.GetAxis(XboxAxis.RightStickX);
+			pitch -= verticalSpeed * XCI.GetAxis(XboxAxis.RightStickY);
+		} else {
 		yaw += horizontalSpeed * Input.GetAxis ("Mouse X");
 		pitch -= verticalSpeed * Input.GetAxis ("Mouse Y");
+		}
 
 		transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 
@@ -46,5 +54,12 @@ public class MouseLook : MonoBehaviour {
 		myHits = myHits;
 	}
 
-
+	void InvertY(){
+		if (XCI.GetButtonDown (XboxButton.Y)) {
+			if (invertY == false)
+				invertY = true;
+			else
+				invertY = false;
+		}
+	}
 }
